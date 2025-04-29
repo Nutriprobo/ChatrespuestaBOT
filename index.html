@@ -229,7 +229,12 @@ document.addEventListener('DOMContentLoaded', () => {
         appendMessage(input, 'user');
 
         // Aquí puedes reemplazar esto por lógica real de respuesta del bot
-        setTimeout(() => appendMessage('Respuesta basada en datos cargados.', 'bot'), 600);
+        setTimeout(() => {
+    const storedInfo = localStorage.getItem('userInfo') || 'sin información previa';
+    const respuesta = `Según lo que me contaste: "${storedInfo}", puedo decir que: [aquí iría una respuesta más avanzada].`;
+    appendMessage(respuesta, 'bot');
+}, 600);
+
 
         userInput.value = '';
     });
