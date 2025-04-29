@@ -1,0 +1,726 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mi Chatbot Personalizado</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f5f7fb;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        header {
+            background-color: #4a6fa5;
+            color: white;
+            padding: 20px 0;
+            text-align: center;
+            border-radius: 8px 8px 0 0;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            font-size: 24px;
+            margin-bottom: 5px;
+        }
+
+        .subtitle {
+            font-size: 14px;
+            opacity: 0.8;
+        }
+
+        .chat-container {
+            display: flex;
+            flex: 1;
+            margin-top: 20px;
+            gap: 20px;
+        }
+        
+        .data-saved-indicator {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: rgba(46, 204, 113, 0.9);
+            color: white;
+            padding: 10px 15px;
+            border-radius: 5px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            display: none;
+            z-index: 100;
+            animation: fadeOut 2s ease-in-out forwards;
+            animation-delay: 2s;
+        }
+        
+        @keyframes fadeOut {
+            from { opa
+
+        .knowledge-base {
+            flex: 1;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .knowledge-base h2 {
+            margin-bottom: 15px;
+            color: #4a6fa5;
+            font-size: 18px;
+        }
+
+        .knowledge-form {
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+            color: #333;
+        }
+
+        input, textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+
+        textarea {
+            min-height: 80px;
+            resize: vertical;
+        }
+
+        button {
+            background-color: #4a6fa5;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #3a5982;
+        }
+
+        .knowledge-list {
+            flex: 1;
+            overflow-y: auto;
+            border: 1px solid #eee;
+            border-radius: 4px;
+            padding: 10px;
+            background-color: #fafafa;
+        }
+
+        .knowledge-item {
+            background-color: white;
+            border: 1px solid #eee;
+            border-radius: 4px;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+
+        .knowledge-item h3 {
+            font-size: 16px;
+            margin-bottom: 5px;
+            color: #4a6fa5;
+        }
+
+        .knowledge-item p {
+            font-size: 14px;
+            color: #555;
+        }
+
+        .knowledge-item .actions {
+            margin-top: 10px;
+            display: flex;
+            gap: 10px;
+        }
+
+        .remove-btn {
+            background-color: #e74c3c;
+            font-size: 12px;
+            padding: 5px 10px;
+        }
+
+        .remove-btn:hover {
+            background-color: #c0392b;
+        }
+
+        .chat-interface {
+            flex: 2;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .chat-header {
+            background-color: #4a6fa5;
+            color: white;
+            padding: 15px;
+            font-weight: 500;
+        }
+
+        .chat-messages {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .message {
+            display: flex;
+            margin-bottom: 10px;
+            max-width: 80%;
+        }
+
+        .user-message {
+            margin-left: auto;
+            flex-direction: row-reverse;
+        }
+
+        .bot-message {
+            margin-right: auto;
+        }
+
+        .message-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background-color: #4a6fa5;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            margin: 0 10px;
+        }
+
+        .user-message .message-avatar {
+            background-color: #2ecc71;
+        }
+
+        .message-content {
+            background-color: #f1f0f0;
+            padding: 12px 15px;
+            border-radius: 18px;
+            font-size: 14px;
+            color: #333;
+            line-height: 1.4;
+        }
+
+        .user-message .message-content {
+            background-color: #dcf8c6;
+        }
+
+        .chat-input-container {
+            padding: 15px;
+            border-top: 1px solid #eee;
+            display: flex;
+            align-items: center;
+        }
+
+        .chat-input {
+            flex: 1;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 20px;
+            font-size: 14px;
+            outline: none;
+        }
+
+        .send-btn {
+            background-color: #4a6fa5;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            margin-left: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .send-btn:hover {
+            background-color: #3a5982;
+        }
+
+        .loading-dots span {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background-color: #888;
+            margin: 0 2px;
+            animation: bounce 1.4s infinite ease-in-out both;
+        }
+        
+        .loading-dots span:nth-child(1) {
+            animation-delay: -0.32s;
+        }
+        
+        .loading-dots span:nth-child(2) {
+            animation-delay: -0.16s;
+        }
+        
+        @keyframes bounce {
+            0%, 80%, 100% { 
+                transform: scale(0);
+            } 40% { 
+                transform: scale(1.0);
+            }
+        }
+
+        .message-time {
+            font-size: 10px;
+            color: #999;
+            margin-top: 5px;
+            text-align: right;
+        }
+
+        /* Estilos para dispositivos móviles */
+        @media (max-width: 768px) {
+            .chat-container {
+                flex-direction: column;
+            }
+            
+            .knowledge-base, .chat-interface {
+                flex: none;
+                width: 100%;
+            }
+            
+            .knowledge-base {
+                order: 2;
+                max-height: 400px;
+                overflow-y: auto;
+            }
+            
+            .chat-interface {
+                order: 1;
+                height: 500px;
+            }
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        #no-match {
+            color: #e74c3c;
+            font-style: italic;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Mi Chatbot Personalizado</h1>
+            <div class="subtitle">Responde únicamente con la información que le has proporcionado</div>
+        </header>
+
+        <div class="chat-container">
+            <div class="knowledge-base">
+                <h2>Base de Conocimientos</h2>
+                <div class="knowledge-form">
+                    <div class="form-group">
+                        <label for="question">Pregunta:</label>
+                        <input type="text" id="question" placeholder="Ej: ¿Cuál es tu nombre?">
+                    </div>
+                    <div class="form-group">
+                        <label for="answer">Respuesta:</label>
+                        <textarea id="answer" placeholder="Ej: Mi nombre es Asistente Virtual y estoy aquí para ayudarte."></textarea>
+                    </div>
+                    <button id="add-knowledge">AÑADIRME INFORMACIÓN</button>
+                    <p id="no-match" class="hidden">Sin coincidencias para esta pregunta. Agrégala a la base de conocimientos.</p>
+                    
+                    <div class="data-management" style="margin-top: 15px; display: flex; gap: 10px;">
+                        <button id="export-knowledge" style="background-color: #27ae60;">Exportar Datos</button>
+                        <button id="import-knowledge" style="background-color: #2980b9;">Importar Datos</button>
+                        <input type="file" id="import-file" accept=".json" style="display: none;">
+                    </div>
+                </div>
+                
+                <div class="knowledge-list" id="knowledge-list">
+                    <!-- Aquí se mostrarán los elementos de conocimiento -->
+                </div>
+            </div>
+
+            <div class="chat-interface">
+                <div class="chat-header">
+                    Chat con mi Asistente
+                </div>
+                <div class="chat-messages" id="chat-messages">
+                    <div class="message bot-message">
+                        <div class="message-avatar">B</div>
+                        <div class="message-bubble">
+                            <div class="message-content">
+                                ¡Hola! Soy tu asistente virtual. Puedes preguntarme cualquier cosa que hayas añadido a mi base de conocimientos.
+                            </div>
+                            <div class="message-time">Ahora</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="chat-input-container">
+                    <input type="text" class="chat-input" id="user-input" placeholder="Escribe tu mensaje aquí...">
+                    <button class="send-btn" id="send-btn">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: white;">
+                            <line x1="22" y1="2" x2="11" y2="13"></line>
+                            <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Base de conocimientos (se guarda en localStorage)
+        let knowledgeBase = [];
+
+        // Cargar datos desde localStorage al iniciar
+        document.addEventListener('DOMContentLoaded', () => {
+            loadKnowledgeBase();
+            renderKnowledgeList();
+            
+            // Añadir un par de ejemplos si la base de conocimientos está vacía
+            if (knowledgeBase.length === 0) {
+                addKnowledgeItem('¿Cómo te llamas?', 'Soy un chatbot personalizado creado para responder preguntas específicas.');
+                addKnowledgeItem('¿Qué puedes hacer?', 'Puedo responder preguntas que hayas agregado a mi base de conocimientos. No tengo acceso a internet ni a información externa.');
+                renderKnowledgeList();
+            }
+        });
+
+        // Cargar la base de conocimientos desde localStorage
+        function loadKnowledgeBase() {
+            const savedKnowledge = localStorage.getItem('chatbotKnowledgeBase');
+            if (savedKnowledge) {
+                knowledgeBase = JSON.parse(savedKnowledge);
+            }
+        }
+
+        // Guardar la base de conocimientos en localStorage
+        function saveKnowledgeBase() {
+            localStorage.setItem('chatbotKnowledgeBase', JSON.stringify(knowledgeBase));
+        }
+
+        // Añadir un nuevo elemento a la base de conocimientos
+        function addKnowledgeItem(question, answer) {
+            // Convertir a minúsculas y eliminar espacios extra para mejor coincidencia
+            const normalizedQuestion = question.toLowerCase().trim();
+            
+            // Verificar si la pregunta ya existe
+            const existingIndex = knowledgeBase.findIndex(item => 
+                item.question.toLowerCase().trim() === normalizedQuestion
+            );
+            
+            if (existingIndex >= 0) {
+                // Actualizar la respuesta si la pregunta existe
+                knowledgeBase[existingIndex].answer = answer;
+            } else {
+                // Añadir nueva pregunta y respuesta
+                knowledgeBase.push({
+                    id: Date.now(), // ID único basado en timestamp
+                    question: question,
+                    answer: answer
+                });
+            }
+            
+            // Guardar en localStorage
+            saveKnowledgeBase();
+        }
+
+        // Eliminar un elemento de la base de conocimientos
+        function removeKnowledgeItem(id) {
+            knowledgeBase = knowledgeBase.filter(item => item.id !== id);
+            saveKnowledgeBase();
+            renderKnowledgeList();
+        }
+
+        // Renderizar la lista de conocimientos en la interfaz
+        function renderKnowledgeList() {
+            const knowledgeListElement = document.getElementById('knowledge-list');
+            knowledgeListElement.innerHTML = '';
+            
+            knowledgeBase.forEach(item => {
+                const knowledgeItem = document.createElement('div');
+                knowledgeItem.className = 'knowledge-item';
+                knowledgeItem.innerHTML = `
+                    <h3>${item.question}</h3>
+                    <p>${item.answer}</p>
+                    <div class="actions">
+                        <button class="remove-btn" data-id="${item.id}">Eliminar</button>
+                    </div>
+                `;
+                knowledgeListElement.appendChild(knowledgeItem);
+            });
+            
+            // Añadir event listeners a los botones de eliminar
+            document.querySelectorAll('.remove-btn').forEach(button => {
+                button.addEventListener('click', (e) => {
+                    const id = parseInt(e.target.getAttribute('data-id'));
+                    removeKnowledgeItem(id);
+                });
+            });
+        }
+
+        // Función para buscar la mejor coincidencia para una pregunta
+        function findBestMatch(question) {
+            // Normalizar la pregunta del usuario (minúsculas, sin espacios extras)
+            const normalizedQuestion = question.toLowerCase().trim();
+            
+            // Primero buscar coincidencia exacta
+            let bestMatch = knowledgeBase.find(item => 
+                item.question.toLowerCase().trim() === normalizedQuestion
+            );
+            
+            // Si no hay coincidencia exacta, buscar coincidencia parcial
+            if (!bestMatch) {
+                // Buscar si la pregunta contiene palabras clave
+                bestMatch = knowledgeBase.find(item => {
+                    const itemQuestion = item.question.toLowerCase();
+                    // Dividir en palabras y verificar si al menos 2 palabras importantes coinciden
+                    const words = normalizedQuestion.split(/\s+/);
+                    const importantWords = words.filter(word => word.length > 3); // Palabras con más de 3 letras
+                    
+                    return importantWords.some(word => itemQuestion.includes(word));
+                });
+            }
+            
+            return bestMatch ? bestMatch.answer : null;
+        }
+
+        // Añadir un mensaje al chat
+        function addMessage(content, isUser = false) {
+            const chatMessages = document.getElementById('chat-messages');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${isUser ? 'user-message' : 'bot-message'}`;
+            
+            const now = new Date();
+            const timeString = `${now.getHours()}:${now.getMinutes().toString().padStart(2, '0')}`;
+            
+            messageDiv.innerHTML = `
+                <div class="message-avatar">${isUser ? 'U' : 'B'}</div>
+                <div class="message-bubble">
+                    <div class="message-content">${content}</div>
+                    <div class="message-time">${timeString}</div>
+                </div>
+            `;
+            
+            chatMessages.appendChild(messageDiv);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        // Añadir mensaje de "escribiendo..."
+        function addTypingIndicator() {
+            const chatMessages = document.getElementById('chat-messages');
+            const typingDiv = document.createElement('div');
+            typingDiv.className = 'message bot-message';
+            typingDiv.id = 'typing-indicator';
+            
+            typingDiv.innerHTML = `
+                <div class="message-avatar">B</div>
+                <div class="message-bubble">
+                    <div class="message-content">
+                        <div class="loading-dots">
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            chatMessages.appendChild(typingDiv);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        // Remover el indicador de "escribiendo..."
+        function removeTypingIndicator() {
+            const typingIndicator = document.getElementById('typing-indicator');
+            if (typingIndicator) {
+                typingIndicator.remove();
+            }
+        }
+
+        // Procesar el mensaje del usuario
+        function processUserMessage(message) {
+            // Añadir el mensaje del usuario al chat
+            addMessage(message, true);
+            
+            // Mostrar indicador de "escribiendo..."
+            addTypingIndicator();
+            
+            // Encontrar la mejor respuesta en la base de conocimientos
+            const answer = findBestMatch(message);
+            
+            // Simular un pequeño retraso para que parezca más natural
+            setTimeout(() => {
+                // Remover el indicador de "escribiendo..."
+                removeTypingIndicator();
+                
+                if (answer) {
+                    // Añadir la respuesta del bot
+                    addMessage(answer);
+                    document.getElementById('no-match').classList.add('hidden');
+                } else {
+                    // No se encontró respuesta
+                    addMessage("Lo siento, no tengo información sobre eso. ¿Podrías añadir esta pregunta a mi base de conocimientos?");
+                    
+                    // Autocompletar el formulario con la pregunta
+                    document.getElementById('question').value = message;
+                    document.getElementById('no-match').classList.remove('hidden');
+                }
+            }, 1000);
+        }
+
+        // Función para exportar la base de conocimientos
+        function exportKnowledge() {
+            // Crear un objeto Blob con los datos
+            const dataStr = JSON.stringify(knowledgeBase, null, 2);
+            const blob = new Blob([dataStr], { type: 'application/json' });
+            
+            // Crear URL para descargar
+            const url = URL.createObjectURL(blob);
+            
+            // Crear elemento de enlace para la descarga
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'mi_chatbot_datos_' + new Date().toISOString().slice(0,10) + '.json';
+            document.body.appendChild(a);
+            a.click();
+            
+            // Limpiar
+            setTimeout(() => {
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+            }, 0);
+        }
+        
+        // Función para importar la base de conocimientos
+        function importKnowledge(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const importedData = JSON.parse(e.target.result);
+                    
+                    // Validar que es un array con el formato correcto
+                    if (Array.isArray(importedData) && importedData.every(item => 
+                        item.hasOwnProperty('id') && 
+                        item.hasOwnProperty('question') && 
+                        item.hasOwnProperty('answer'))) {
+                        
+                        // Combinar con datos existentes (evitando duplicados)
+                        importedData.forEach(item => {
+                            const exists = knowledgeBase.some(existingItem => 
+                                existingItem.question.toLowerCase().trim() === item.question.toLowerCase().trim()
+                            );
+                            
+                            if (!exists) {
+                                knowledgeBase.push(item);
+                            }
+                        });
+                        
+                        // Guardar y actualizar la interfaz
+                        saveKnowledgeBase();
+                        renderKnowledgeList();
+                        
+                        alert(`¡Importación exitosa! Se añadieron ${importedData.length} elementos a la base de conocimientos.`);
+                    } else {
+                        alert('El archivo no tiene el formato correcto.');
+                    }
+                } catch (error) {
+                    alert('Error al importar el archivo: ' + error.message);
+                }
+            };
+            reader.readAsText(file);
+        }
+
+        // Event Listeners
+        document.getElementById('add-knowledge').addEventListener('click', () => {
+            const question = document.getElementById('question').value.trim();
+            const answer = document.getElementById('answer').value.trim();
+            
+            if (question && answer) {
+                addKnowledgeItem(question, answer);
+                renderKnowledgeList();
+                
+                // Limpiar el formulario
+                document.getElementById('question').value = '';
+                document.getElementById('answer').value = '';
+                document.getElementById('no-match').classList.add('hidden');
+                
+                // Mostrar mensaje de confirmación
+                alert('¡Información añadida correctamente a la base de conocimientos!');
+            } else {
+                alert('Por favor completa tanto la pregunta como la respuesta.');
+            }
+        });
+        
+        // Eventos para exportar e importar datos
+        document.getElementById('export-knowledge').addEventListener('click', exportKnowledge);
+        
+        document.getElementById('import-knowledge').addEventListener('click', () => {
+            document.getElementById('import-file').click();
+        });
+        
+        document.getElementById('import-file').addEventListener('change', importKnowledge);
+
+        document.getElementById('send-btn').addEventListener('click', () => {
+            const userInput = document.getElementById('user-input');
+            const message = userInput.value.trim();
+            
+            if (message) {
+                processUserMessage(message);
+                userInput.value = '';
+            }
+        });
+
+        document.getElementById('user-input').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                const message = e.target.value.trim();
+                
+                if (message) {
+                    processUserMessage(message);
+                    e.target.value = '';
+                }
+            }
+        });
+    </script>
+</body>
+</html>
