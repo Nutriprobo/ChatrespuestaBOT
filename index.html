@@ -3,624 +3,266 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chatbot Simple</title>
+    <title>Chat Web</title>
     <style>
-        * {
+        /* Estilos básicos para el chat */
+        body {
+            font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
-        body {
-            background-color: #f5f7fb;
-            height: 100vh;
+        #chat-container {
             display: flex;
             flex-direction: column;
-        }
-
-        .container {
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 20px;
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-        }
-
-        header {
-            background-color: #4a6fa5;
-            color: white;
-            padding: 20px 0;
-            text-align: center;
-            border-radius: 8px 8px 0 0;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-        }
-
-        h1 {
-            font-size: 24px;
-            margin-bottom: 5px;
-        }
-
-        .subtitle {
-            font-size: 14px;
-            opacity: 0.8;
-        }
-
-        .chat-interface {
-            flex: 1;
-            background-color: white;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
-            margin-top: 20px;
-        }
-
-        .chat-header {
-            background-color: #4a6fa5;
-            color: white;
-            padding: 15px;
-            font-weight: 500;
-            display: flex;
             justify-content: space-between;
-            align-items: center;
+            height: 100vh;
         }
 
-        .add-info-btn {
-            background-color: #2ecc71;
-            color: white;
-            border: none;
-            padding: 8px 15px;
-            border-radius: 4px;
-            cursor: pointer;
-            font-weight: 500;
-            transition: background-color 0.3s;
-        }
-
-        .add-info-btn:hover {
-            background-color: #27ae60;
-        }
-
-        .chat-messages {
-            flex: 1;
-            padding: 20px;
+        #chat-messages {
+            flex-grow: 1;
             overflow-y: auto;
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
+            padding: 10px;
+            background-color: #f4f4f4;
         }
 
         .message {
             display: flex;
             margin-bottom: 10px;
-            max-width: 80%;
-        }
-
-        .user-message {
-            margin-left: auto;
-            flex-direction: row-reverse;
-        }
-
-        .bot-message {
-            margin-right: auto;
-        }
-
-        .message-avatar {
-            width: 36px;
-            height: 36px;
-            border-radius: 50%;
-            background-color: #4a6fa5;
-            color: white;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-            margin: 0 10px;
-        }
-
-        .user-message .message-avatar {
-            background-color: #2ecc71;
-        }
-
-        .message-content {
-            background-color: #f1f0f0;
-            padding: 12px 15px;
-            border-radius: 18px;
-            font-size: 14px;
-            color: #333;
-            line-height: 1.4;
         }
 
         .user-message .message-content {
-            background-color: #dcf8c6;
+            background-color: #daf1da;
+            color: #333;
         }
 
-        .chat-input-container {
-            padding: 15px;
-            border-top: 1px solid #eee;
-            display: flex;
-            align-items: center;
+        .bot-message .message-content {
+            background-color: #f4d1d1;
+            color: #333;
         }
 
-        .chat-input {
-            flex: 1;
-            padding: 12px 15px;
-            border: 1px solid #ddd;
-            border-radius: 20px;
-            font-size: 14px;
-            outline: none;
-        }
-
-        .send-btn {
-            background-color: #4a6fa5;
+        .message-avatar {
             width: 40px;
             height: 40px;
             border-radius: 50%;
-            margin-left: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border: none;
-            cursor: pointer;
+            background-color: #333;
+            color: white;
+            text-align: center;
+            line-height: 40px;
+            margin-right: 10px;
         }
 
-        .send-btn:hover {
-            background-color: #3a5982;
-        }
-
-        .loading-dots span {
-            display: inline-block;
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            background-color: #888;
-            margin: 0 2px;
-            animation: bounce 1.4s infinite ease-in-out both;
-        }
-        
-        .loading-dots span:nth-child(1) {
-            animation-delay: -0.32s;
-        }
-        
-        .loading-dots span:nth-child(2) {
-            animation-delay: -0.16s;
-        }
-        
-        @keyframes bounce {
-            0%, 80%, 100% { 
-                transform: scale(0);
-            } 40% { 
-                transform: scale(1.0);
-            }
+        .message-bubble {
+            max-width: 70%;
+            padding: 10px;
+            border-radius: 10px;
         }
 
         .message-time {
-            font-size: 10px;
-            color: #999;
-            margin-top: 5px;
+            font-size: 0.8em;
+            color: #777;
             text-align: right;
         }
 
-        /* Modal para añadir información */
-        .modal {
+        #user-input-container {
+            display: flex;
+            padding: 10px;
+            background-color: #fff;
+        }
+
+        #user-input {
+            flex-grow: 1;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            margin-right: 10px;
+        }
+
+        #send-btn {
+            padding: 10px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+        }
+
+        /* Estilos para el modal */
+        #info-modal {
             display: none;
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(0, 0, 0, 0.5);
-            z-index: 1000;
-            align-items: center;
+            background-color: rgba(0, 0, 0, 0.7);
             justify-content: center;
+            align-items: center;
         }
 
         .modal-content {
-            background-color: white;
-            padding: 25px;
-            border-radius: 8px;
-            width: 90%;
-            max-width: 600px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            max-width: 500px;
+            width: 80%;
         }
 
         .modal-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+            font-size: 1.2em;
+            margin-bottom: 10px;
+        }
+
+        .modal-body {
             margin-bottom: 20px;
         }
 
-        .modal-title {
-            font-size: 20px;
-            color: #4a6fa5;
-        }
-
-        .close-modal {
-            background: none;
-            border: none;
-            font-size: 22px;
-            cursor: pointer;
-            color: #999;
+        .modal-footer {
+            text-align: right;
         }
 
         .info-textarea {
             width: 100%;
-            height: 250px;
-            padding: 12px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            font-size: 14px;
-            margin-bottom: 20px;
-            resize: vertical;
+            height: 150px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
         }
 
         .save-info-btn {
-            background-color: #2ecc71;
+            padding: 10px;
+            background-color: #28a745;
             color: white;
             border: none;
-            padding: 10px 20px;
-            border-radius: 4px;
-            cursor: pointer;
-            font-weight: 500;
-            float: right;
-        }
-
-        .data-saved-indicator {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            background-color: rgba(46, 204, 113, 0.9);
-            color: white;
-            padding: 10px 15px;
             border-radius: 5px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Indicador de datos guardados */
+        #data-saved {
             display: none;
-            z-index: 1100;
-            animation: fadeOut 2s ease-in-out forwards;
-            animation-delay: 2s;
-        }
-        
-        @keyframes fadeOut {
-            from { opacity: 1; }
-            to { opacity: 0; }
-        }
-
-        .help-text {
-            font-size: 13px;
-            color: #666;
-            margin-bottom: 15px;
-            line-height: 1.4;
-        }
-
-        /* Estilos para dispositivos móviles */
-        @media (max-width: 768px) {
-            .container {
-                padding: 10px;
-            }
-            
-            .modal-content {
-                width: 95%;
-                padding: 15px;
-            }
-            
-            .info-textarea {
-                height: 200px;
-            }
+            background-color: #28a745;
+            color: white;
+            padding: 5px 10px;
+            position: fixed;
+            bottom: 10px;
+            right: 10px;
+            border-radius: 5px;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <header>
-            <h1>Mi Chatbot Personalizado</h1>
-            <div class="subtitle">Responde únicamente con la información que le has proporcionado</div>
-        </header>
-        
-        <div id="data-saved" class="data-saved-indicator">
-            ¡Datos guardados correctamente!
+
+<div id="chat-container">
+    <div id="chat-messages"></div>
+
+    <div id="user-input-container">
+        <input type="text" id="user-input" placeholder="Escribe un mensaje..." />
+        <button id="send-btn">Enviar</button>
+    </div>
+</div>
+
+<!-- Modal de añadir información -->
+<div id="info-modal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <span>Información adicional</span>
+            <button id="close-modal" style="background: none; border: none; font-size: 1.5em;">&times;</button>
         </div>
-        
-        <div class="chat-interface">
-            <div class="chat-header">
-                <div>Chat con mi Asistente</div>
-                <button id="add-info-btn" class="add-info-btn">AÑADIR INFORMACIÓN</button>
-            </div>
-            <div class="chat-messages" id="chat-messages">
-                <div class="message bot-message">
-                    <div class="message-avatar">B</div>
-                    <div class="message-bubble">
-                        <div class="message-content">
-                            ¡Hola! Soy tu asistente virtual. Puedes preguntarme sobre la información que hayas añadido.
-                        </div>
-                        <div class="message-time">Ahora</div>
-                    </div>
-                </div>
-            </div>
-            <div class="chat-input-container">
-                <input type="text" class="chat-input" id="user-input" placeholder="Escribe tu mensaje aquí...">
-                <button class="send-btn" id="send-btn">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: white;">
-                        <line x1="22" y1="2" x2="11" y2="13"></line>
-                        <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
-                    </svg>
-                </button>
-            </div>
+        <div class="modal-body">
+            <textarea class="info-textarea" placeholder="Escribe algo aquí..."></textarea>
         </div>
-        
-        <!-- Modal para añadir información -->
-        <div class="modal" id="info-modal">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <div class="modal-title">Añadir Información</div>
-                    <button class="close-modal" id="close-modal">&times;</button>
-                </div>
-                <div class="help-text">
-                    Añade tu información en formato "Pregunta: Respuesta". Cada par en una línea separada.<br>
-                    Ejemplo:<br>
-                    ¿Cuál es tu nombre?: Mi nombre es Asistente Virtual<br>
-                    ¿Qué tiempo hace hoy?: Hoy hace sol y 25 grados<br>
-                </div>
-                <textarea id="info-textarea" class="info-textarea" placeholder="¿Pregunta?: Respuesta"></textarea>
-                <button id="save-info-btn" class="save-info-btn">GUARDAR</button>
-            </div>
+        <div class="modal-footer">
+            <button class="save-info-btn">Guardar</button>
         </div>
     </div>
+</div>
 
-    <script>
-        // Base de conocimientos (se guarda en localStorage)
-        let knowledgeBase = [];
-        
-        // Cargar datos desde localStorage al iniciar
-        document.addEventListener('DOMContentLoaded', () => {
-            loadKnowledgeBase();
-            
-            // Añadir información por defecto si no hay datos
-            if (knowledgeBase.length === 0) {
-                addKnowledgeItem('¿Cómo te llamas?', 'Soy un chatbot personalizado creado para responder preguntas específicas.');
-                addKnowledgeItem('¿Qué puedes hacer?', 'Puedo responder preguntas que hayas agregado a mi base de conocimientos. No tengo acceso a internet ni a información externa.');
-            }
-        });
-        
-        // Cargar la base de conocimientos desde localStorage
-        function loadKnowledgeBase() {
-            const savedKnowledge = localStorage.getItem('chatbotKnowledgeBase');
-            if (savedKnowledge) {
-                knowledgeBase = JSON.parse(savedKnowledge);
-            }
-        }
-        
-        // Guardar la base de conocimientos en localStorage
-        function saveKnowledgeBase() {
-            localStorage.setItem('chatbotKnowledgeBase', JSON.stringify(knowledgeBase));
-            
-            // Mostrar indicador de guardado
-            const savedIndicator = document.getElementById('data-saved');
-            savedIndicator.style.display = 'block';
-            savedIndicator.style.animation = 'none';
-            
-            // Forzar un reflow para reiniciar la animación
-            void savedIndicator.offsetWidth;
-            
-            // Reiniciar la animación
-            savedIndicator.style.animation = 'fadeOut 2s ease-in-out forwards';
-            savedIndicator.style.animationDelay = '2s';
-            
-            // Ocultar después de la animación
-            setTimeout(() => {
-                savedIndicator.style.display = 'none';
-            }, 4000);
-        }
-        
-        // Añadir un nuevo elemento a la base de conocimientos
-        function addKnowledgeItem(question, answer) {
-            // Convertir a minúsculas y eliminar espacios extra para mejor coincidencia
-            const normalizedQuestion = question.toLowerCase().trim();
-            
-            // Verificar si la pregunta ya existe
-            const existingIndex = knowledgeBase.findIndex(item => 
-                item.question.toLowerCase().trim() === normalizedQuestion
-            );
-            
-            if (existingIndex >= 0) {
-                // Actualizar la respuesta si la pregunta existe
-                knowledgeBase[existingIndex].answer = answer;
-            } else {
-                // Añadir nueva pregunta y respuesta
-                knowledgeBase.push({
-                    id: Date.now(), // ID único basado en timestamp
-                    question: question,
-                    answer: answer
-                });
-            }
-            
-            // Guardar en localStorage
-            saveKnowledgeBase();
-        }
-        
-        // Procesar el texto grande de información
-        function processInfoText(text) {
-            // Dividir el texto en líneas
-            const lines = text.split('\n');
-            let count = 0;
-            
-            lines.forEach(line => {
-                // Buscar el patrón "Pregunta: Respuesta" o "Pregunta? Respuesta"
-                const match = line.match(/(.+?)[\?:](.+)/);
-                if (match) {
-                    const question = match[1].trim();
-                    const answer = match[2].trim();
-                    
-                    if (question && answer) {
-                        addKnowledgeItem(question, answer);
-                        count++;
-                    }
-                }
-            });
-            
-            return count;
-        }
-        
-        // Función para buscar la mejor coincidencia para una pregunta
-        function findBestMatch(question) {
-            // Normalizar la pregunta del usuario (minúsculas, sin espacios extras)
-            const normalizedQuestion = question.toLowerCase().trim();
-            
-            // Primero buscar coincidencia exacta
-            let bestMatch = knowledgeBase.find(item => 
-                item.question.toLowerCase().trim() === normalizedQuestion
-            );
-            
-            // Si no hay coincidencia exacta, buscar coincidencia parcial
-            if (!bestMatch) {
-                // Buscar si la pregunta contiene palabras clave
-                bestMatch = knowledgeBase.find(item => {
-                    const itemQuestion = item.question.toLowerCase();
-                    // Dividir en palabras y verificar si al menos 2 palabras importantes coinciden
-                    const words = normalizedQuestion.split(/\s+/);
-                    const importantWords = words.filter(word => word.length > 3); // Palabras con más de 3 letras
-                    
-                    return importantWords.some(word => itemQuestion.includes(word));
-                });
-            }
-            
-            return bestMatch ? bestMatch.answer : null;
-        }
-        
-        // Añadir un mensaje al chat
-        function addMessage(content, isUser = false) {
-            const chatMessages = document.getElementById('chat-messages');
-            const messageDiv = document.createElement('div');
-            messageDiv.className = `message ${isUser ? 'user-message' : 'bot-message'}`;
-            
-            const now = new Date();
-            const timeString = `${now.getHours()}:${now.getMinutes().toString().padStart(2, '0')}`;
-            
-            messageDiv.innerHTML = `
-                <div class="message-avatar">${isUser ? 'U' : 'B'}</div>
+<!-- Indicador de datos guardados -->
+<div id="data-saved">¡Datos guardados!</div>
+
+<!-- Botón para abrir el modal de añadir información -->
+<button id="add-info-btn" style="position: fixed; top: 10px; left: 10px;">Añadir Información</button>
+
+<!-- Botón para limpiar localStorage (opcional) -->
+<button onclick="localStorage.clear(); location.reload();" style="position:fixed;bottom:10px;left:10px;">🧹 Limpiar todo</button>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const chatMessages = document.getElementById('chat-messages');
+    const sendBtn = document.getElementById('send-btn');
+    const userInput = document.getElementById('user-input');
+    const dataSavedIndicator = document.getElementById('data-saved');
+
+    // Mostrar mensajes guardados
+    const savedMessages = JSON.parse(localStorage.getItem('chatMessages')) || [];
+    savedMessages.forEach(msg => {
+        chatMessages.innerHTML += msg;
+    });
+
+    // Función para guardar en localStorage
+    function saveChat() {
+        const messages = chatMessages.innerHTML;
+        localStorage.setItem('chatMessages', JSON.stringify(messages));
+    }
+
+    // Función para crear burbuja de mensaje
+    function appendMessage(message, type = 'user') {
+        const now = new Date();
+        const time = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+        const html = `
+            <div class="message ${type}-message">
+                <div class="message-avatar">${type === 'user' ? 'T' : 'B'}</div>
                 <div class="message-bubble">
-                    <div class="message-content">${content}</div>
-                    <div class="message-time">${timeString}</div>
+                    <div class="message-content">${message}</div>
+                    <div class="message-time">${time}</div>
                 </div>
-            `;
-            
-            chatMessages.appendChild(messageDiv);
-            chatMessages.scrollTop = chatMessages.scrollHeight;
-        }
-        
-        // Añadir mensaje de "escribiendo..."
-        function addTypingIndicator() {
-            const chatMessages = document.getElementById('chat-messages');
-            const typingDiv = document.createElement('div');
-            typingDiv.className = 'message bot-message';
-            typingDiv.id = 'typing-indicator';
-            
-            typingDiv.innerHTML = `
-                <div class="message-avatar">B</div>
-                <div class="message-bubble">
-                    <div class="message-content">
-                        <div class="loading-dots">
-                            <span></span>
-                            <span></span>
-                            <span></span>
-                        </div>
-                    </div>
-                </div>
-            `;
-            
-            chatMessages.appendChild(typingDiv);
-            chatMessages.scrollTop = chatMessages.scrollHeight;
-        }
-        
-        // Remover el indicador de "escribiendo..."
-        function removeTypingIndicator() {
-            const typingIndicator = document.getElementById('typing-indicator');
-            if (typingIndicator) {
-                typingIndicator.remove();
-            }
-        }
-        
-        // Procesar el mensaje del usuario
-        function processUserMessage(message) {
-            // Añadir el mensaje del usuario al chat
-            addMessage(message, true);
-            
-            // Mostrar indicador de "escribiendo..."
-            addTypingIndicator();
-            
-            // Encontrar la mejor respuesta en la base de conocimientos
-            const answer = findBestMatch(message);
-            
-            // Simular un pequeño retraso para que parezca más natural
-            setTimeout(() => {
-                // Remover el indicador de "escribiendo..."
-                removeTypingIndicator();
-                
-                if (answer) {
-                    // Añadir la respuesta del bot
-                    addMessage(answer);
-                } else {
-                    // No se encontró respuesta
-                    addMessage("Lo siento, no tengo información sobre eso. Puedes añadir esta información usando el botón 'AÑADIR INFORMACIÓN'.");
-                }
-            }, 1000);
-        }
-        
-        // Control del modal de información
-        function openInfoModal() {
-            document.getElementById('info-modal').style.display = 'flex';
-        }
-        
-        function closeInfoModal() {
-            document.getElementById('info-modal').style.display = 'none';
-        }
-        
-        // Event Listeners
-        document.getElementById('add-info-btn').addEventListener('click', openInfoModal);
-        document.getElementById('close-modal').addEventListener('click', closeInfoModal);
-        
-        document.getElementById('save-info-btn').addEventListener('click', () => {
-            const infoText = document.getElementById('info-textarea').value;
-            if (infoText.trim()) {
-                const count = processInfoText(infoText);
-                alert(`¡Se han añadido ${count} elementos de información correctamente!`);
-                document.getElementById('info-textarea').value = '';
-                closeInfoModal();
-            } else {
-                alert('Por favor añade alguna información antes de guardar.');
-            }
-        });
-        
-        document.getElementById('send-btn').addEventListener('click', () => {
-            const userInput = document.getElementById('user-input');
-            const message = userInput.value.trim();
-            
-            if (message) {
-                processUserMessage(message);
-                userInput.value = '';
-            }
-        });
-        
-        document.getElementById('user-input').addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') {
-                const message = e.target.value.trim();
-                
-                if (message) {
-                    processUserMessage(message);
-                    e.target.value = '';
-                }
-            }
-        });
-        
-        // Cerrar el modal si se hace clic fuera de él
-        window.addEventListener('click', (e) => {
-            const modal = document.getElementById('info-modal');
-            if (e.target === modal) {
-                closeInfoModal();
-            }
-        });
-    </script>
+            </div>`;
+        chatMessages.innerHTML += html;
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+        saveChat();
+    }
+
+    // Evento de envío de mensaje
+    sendBtn.addEventListener('click', () => {
+        const input = userInput.value.trim();
+        if (!input) return;
+        appendMessage(input, 'user');
+
+        // Aquí puedes reemplazar esto por lógica real de respuesta del bot
+        setTimeout(() => appendMessage('Respuesta basada en datos cargados.', 'bot'), 600);
+
+        userInput.value = '';
+    });
+
+    userInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') sendBtn.click();
+    });
+});
+</script>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const modal = document.getElementById('info-modal');
+    const openModalBtn = document.getElementById('add-info-btn');
+    const closeModalBtn = document.getElementById('close-modal');
+    const saveInfoBtn = document.querySelector('.save-info-btn');
+    const infoTextarea = document.querySelector('.info-textarea');
+    const savedIndicator = document.getElementById('data-saved');
+
+    // Cargar texto guardado
+    infoTextarea.value = localStorage.getItem('userInfo') || '';
+
+    openModalBtn.addEventListener('click', () => modal.style.display = 'flex');
+    closeModalBtn.addEventListener('click', () => modal.style.display = 'none');
+
+    saveInfoBtn.addEventListener('click', () => {
+        localStorage.setItem('userInfo', infoTextarea.value);
+        modal.style.display = 'none';
+        savedIndicator.style.display = 'block';
+        setTimeout(() => savedIndicator.style.display = 'none', 3000);
+    });
+});
+</script>
+
 </body>
 </html>
